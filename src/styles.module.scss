@@ -31,6 +31,26 @@
   padding-right: 10%; /* 오른쪽 여백 추가 */
 }
 
+.header {
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  // padding: 10px 80px 0px 0px;
+}
+
+.translate {
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  margin-right: 90px;
+  margin-top: 10px;
+}
+
+.titleImage {
+  width: 100%;
+  margin-top: 20px;
+}
+
 .pageTitle {
   margin-top: 40px;
   font-family: 'Roboto', sans-serif;
@@ -49,7 +69,7 @@
 .title {
   width: 100%;
   padding: 12px;
-  color: #222;
+  color: #616161;
   font-size: 24px;
   text-align: center;
   font-weight: bold;
@@ -86,12 +106,13 @@
 }
 
 .inputField {
+  border-radius: 5px;
   padding: 0 12px;
   margin-right: 28px;
   width: 90%;
   height: 40px;
   outline: none;
-  border-radius: 12px;
+  // border-radius: 12px;
   background-color: #f0f2f6;
   border: 1px solid #f0f2f6;
   resize: none;
@@ -99,14 +120,14 @@
 }
 
 .submit {
-  width: 60px;
+  width: 80px;
   height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 8px;
   padding: 4px;
-  background-color: #393939;
+  background-color: #10325b;
   color: white;
   cursor: pointer;
   border: none;
@@ -132,4 +153,8 @@
   padding: 48px 0 0 100px;
   font-size: 16px;
   line-height: 24px;
+}
+
+.footer {
+  height: 300px;
 }

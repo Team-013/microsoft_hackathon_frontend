@@ -13,7 +13,7 @@ const CursorSVG = () => {
 };
 
 const App = () => {
-  const title = '전자 정부 표준 프레임워크 Search AI';
+  const title = 'E프레임마법사';
 
   const [inputValue, setInputValue] = useState<string>('');
   const [question, setQuestion] = useState<string>('');
@@ -28,7 +28,8 @@ const App = () => {
     setQuestion(inputValue);
     setInputValue('');
 
-    setChatHistory([...chatHistory, { user: 'AI', content: 'AI가 답변중입니다...' }]);
+    // setChatHistory([...chatHistory, { user: 'AI', content: 'AI가 답변중입니다...' }]);
+    setChatHistory([...chatHistory, { user: 'AI', content: 'E프레임마법사가 답변중입니다...' }]);
 
     const englishResult = await axios.get('http://13.124.93.106:8080/api/test', {
       params: {
@@ -46,7 +47,16 @@ const App = () => {
       })
     ).data;
 
-    const data = await res.data[0].translations.map((choice: any) => choice.text).join('\n');
+    /// ''' 있을 때부터 클래스 다음 ''' 나올 때까지
+    const data = await res.data[0].translations.map((choice: any) => {
+      const text = choice.text.replaceAll('안녕하세요. ', '');
+      // console.log({text});
+      return text;
+    }).join('\n');
+
+    // 홀수인놈만 ''' 내부 놈들임.
+    const testA = data.split("'''");
+    console.log({testA});
     const resultText = `안녕하세요.\n표준프레임워크센터 AI입니다.\n\n${data}\n\n감사합니다.`;
     setChatHistory([...chatHistory, { user: 'User', content: resultText }]);
   };
@@ -59,22 +69,31 @@ const App = () => {
 
     const intervalId = setInterval(() => {
       setDisplayResponse(stringResponse.slice(0, i));
-
       i++;
 
       if (i > stringResponse.length) {
         clearInterval(intervalId);
         setCompletedTyping(true);
       }
-    }, 60);
+    // }, 60);
+    }, 5);
 
     return () => clearInterval(intervalId);
   }, [chatHistory]);
 
+  
+
   return (
     <div className={styles.container}>
+      {/* <div className={styles.header}>
+        <div></div>
+        <div>
+          <img className={styles.translate} src='translate.png' alt='번역'></img>
+        </div>
+      </div> */}
+      <img className={styles.titleImage} src='small_title.png' alt='타이틀 이미지'></img>
       {/* 큰 페이지 제목 */}
-      <h1 className={styles.pageTitle}>{title}</h1>
+      {/* <h1 className={styles.pageTitle}>{title}</h1> */}
 
       <div className={styles.containerBox}>
         {/* 나머지 입력 요소들 */}
@@ -82,7 +101,7 @@ const App = () => {
         <br />
         <div className={styles.inputContainer}>
           {/* 메인 */}
-          <div className={styles.title}>Technical Support</div>
+          <div className={styles.title}>전자 정부 표준 프레임워크 Search AI</div>
           <div className={styles.article}>
             <div className={styles.questionbox}>
               <div className={styles.icon}>
@@ -92,12 +111,12 @@ const App = () => {
                 type='text'
                 value={inputValue}
                 onChange={handleChange}
-                placeholder='여기에 입력하세요'
+                placeholder='여기에 입력하세요.'
                 className={styles.inputField}
               />
 
               <button className={styles.submit} onClick={onClick} disabled={!inputValue || !completedTyping}>
-                검색
+                질문
               </button>
             </div>
             <div className={styles.yourQuestionContainer}>
@@ -109,6 +128,7 @@ const App = () => {
               <div className={styles.icon}>
                 <BsFillChatLeftTextFill size={40} color='green' />
               </div>
+              {/* 실제 출력되는 부분 */}
               <span className={styles.displayResponse}>
                 {displayResponse}
                 {!completedTyping && <CursorSVG />}
@@ -117,6 +137,7 @@ const App = () => {
           </div>
         </div>
       </div>
+      <div className={styles.footer}></div>
     </div>
   );
 };
