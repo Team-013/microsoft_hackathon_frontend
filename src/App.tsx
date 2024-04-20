@@ -3,6 +3,7 @@ import { useState, ChangeEvent, useEffect } from 'react';
 import { BsQuestionSquareFill } from 'react-icons/bs';
 import { BsFillChatLeftTextFill } from 'react-icons/bs';
 import axios from 'axios';
+import { setDefaultResultOrder } from 'dns';
 
 const CursorSVG = () => {
   return (
@@ -17,9 +18,10 @@ const App = () => {
 
   const [inputValue, setInputValue] = useState<string>('');
   const [question, setQuestion] = useState<string>('');
-  const [chatHistory, setChatHistory] = useState([{ user: 'AI', content: '' }]);
-  const [displayResponse, setDisplayResponse] = useState('');
+  const [chatHistory, setChatHistory] = useState([{ user: 'AI', content: [''] }]);
+  const [displayResponse, setDisplayResponse] = useState(['']);
   const [completedTyping, setCompletedTyping] = useState(true);
+  const [displayTextArray, setDisplayTextArray] = useState<string[]>([]);
 
   // input 값이 변경될 때마다 호출되는 함수
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => setInputValue(event.target.value); // 입력값을 state에 반영합니다.
@@ -27,60 +29,92 @@ const App = () => {
   const onClick = async () => {
     setQuestion(inputValue);
     setInputValue('');
+    setChatHistory([...chatHistory, { user: 'AI', content: [`${title}가 답변중입니다...`] }]);
 
-    // setChatHistory([...chatHistory, { user: 'AI', content: 'AI가 답변중입니다...' }]);
-    setChatHistory([...chatHistory, { user: 'AI', content: 'E프레임마법사가 답변중입니다...' }]);
-
+    // 영문 답변
     const englishResult = await axios.get('http://13.124.93.106:8080/api/test', {
       params: {
         text: inputValue,
       },
     });
+    const englishResData = englishResult.data.data.choices.map((choice: any) => {
+      return choice.message.content;
+    }).join('\n');
 
-    const englishResultData = englishResult.data.data.choices.map((choice: any) => choice.message.content).join('\n');
-
-    const res = (
+    // 한글 답변
+    const koreanRes = (
       await axios.get('http://13.124.93.106:8080/api/translate', {
         params: {
-          text: englishResultData,
+          text: englishResData,
         },
       })
     ).data;
 
     /// ''' 있을 때부터 클래스 다음 ''' 나올 때까지
-    const data = await res.data[0].translations.map((choice: any) => {
+    const koreanData = await koreanRes.data[0].translations.map((choice: any) => {
       const text = choice.text.replaceAll('안녕하세요. ', '');
-      // console.log({text});
       return text;
     }).join('\n');
 
-    // 홀수인놈만 ''' 내부 놈들임.
-    const testA = data.split("'''");
-    console.log({testA});
-    const resultText = `안녕하세요.\n표준프레임워크센터 AI입니다.\n\n${data}\n\n감사합니다.`;
-    setChatHistory([...chatHistory, { user: 'User', content: resultText }]);
+    const splitedEnglishData = englishResData.split("```");
+    const splitedKoreanData = koreanData.split("'''");
+
+    // setDisplayTextArray(splitedKoreanData)
+    // console.log({splitedKoreanData});
+
+    console.log({splitedEnglishData});
+
+    const resultText = `안녕하세요.\n표준프레임워크센터 AI, ${title} 입니다.\n\n${koreanData}\n\n감사합니다.`;
+    const splitedText = resultText.split("'''").map((text, index)=>{
+      
+      const isCode = index%2 == 1;
+      if(isCode){
+        return splitedEnglishData[index];
+      }else{
+        return text;
+      }
+    });
+
+    setChatHistory([...chatHistory, { user: 'User', content: splitedText }]);
   };
 
   useEffect(() => {
-    setCompletedTyping(false);
+    const runTypingAnimation = async () => {
+      const originContent = chatHistory[1]?.content;
+      console.log({originContent});
+      if (!originContent) return;
+      // animation start
+      setCompletedTyping(false);
+      // displayResponse string 배열이 화면에 띄워지게 됨
+      console.log({originContent : originContent[originContent.length - 1]})
 
-    let i = 0;
-    const stringResponse = chatHistory[chatHistory.length - 1].content;
+      for(let i = 0; i<originContent.length; ++i) {
+        await new Promise((resolve) => {
 
-    const intervalId = setInterval(() => {
-      setDisplayResponse(stringResponse.slice(0, i));
-      i++;
-
-      if (i > stringResponse.length) {
-        clearInterval(intervalId);
-        setCompletedTyping(true);
+          let j = 0;
+          const intervalId = setInterval(() => {
+            const tempString = originContent[i].slice(0, j);
+            j++;
+            setDisplayResponse((state) => {
+              const curState = [...state];
+              curState[i] = tempString;
+              return curState;
+            })
+            if(j > originContent[i].length) {
+              clearInterval(intervalId);
+              resolve(intervalId);
+            }
+          }, 60)
+        })
       }
-    // }, 60);
-    }, 5);
 
-    return () => clearInterval(intervalId);
-  }, [chatHistory]);
 
+      // animation fin
+      setCompletedTyping(true); // 모든 애니메이션이 끝난 후에 상태 업데이트
+    };
+  
+    runTypingAnimation();
+  }, [chatHistory]); // chatHistory 변경 시에만 useEffect 실행
   
 
   return (
@@ -116,7 +150,7 @@ const App = () => {
               />
 
               <button className={styles.submit} onClick={onClick} disabled={!inputValue || !completedTyping}>
-                질문
+                검색
               </button>
             </div>
             <div className={styles.yourQuestionContainer}>
@@ -128,9 +162,13 @@ const App = () => {
               <div className={styles.icon}>
                 <BsFillChatLeftTextFill size={40} color='green' />
               </div>
-              {/* 실제 출력되는 부분 */}
               <span className={styles.displayResponse}>
-                {displayResponse}
+                {/* {displayResponse} */}
+                {displayResponse.map((data, index) => {
+                  const predicate = index % 2 === 0;
+                  const returnTag = <pre className={predicate ? "" : styles.code} key={data + index}>{data.trim()}</pre>;
+                  return returnTag;
+                })}
                 {!completedTyping && <CursorSVG />}
               </span>
             </div>

@@ -49,6 +49,7 @@
 .titleImage {
   width: 100%;
   margin-top: 20px;
+  margin-left: 29px;
 }
 
 .pageTitle {
@@ -146,6 +147,7 @@
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 40px;
+  width: 100%;
 }
 
 .article {
@@ -157,4 +159,23 @@
 
 .footer {
   height: 300px;
+}
+
+.code {
+  padding: 19px 20px;
+  margin-top: 1.4rem;
+  margin-bottom: 1.4rem;
+  // background-color: #232323;
+  // color: rgb(0, 211, 42);
+  border-radius: 8px;
+  // background-color: #d8d8d8;
+  background-color: #d9d9d9;
+  color: rgb(0, 123, 20);
+}
+
+// .firstCode {
+//   background-color: #5a416a;
+// }
+pre {
+  white-space: pre-wrap;
 }
