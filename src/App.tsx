@@ -67,7 +67,7 @@ const App = () => {
 
     const splitedEnglishData = englishResData.split("```");
 
-    const resultText = `안녕하세요.\n표준프레임워크센터 AI ${title} 입니다.\n\n${koreanData}\n\n감사합니다.`;
+    const resultText = `안녕하세요.\n표준프레임워크센터 AI ${title}입니다.\n\n${koreanData}\n\n감사합니다.`;
     const splitedText = resultText.split("'''").map((text, index)=>{
       
       const isCode = index%2 == 1;
