@@ -228,7 +228,9 @@ const App = () => {
           </div>
         </div>
     <div className={styles.container}>
-    <img className={styles.titleImage} src='small_title.png' alt='타이틀 이미지'></img>
+    <img className={styles.titleImage} src='small_title.png' alt='타이틀 이미지' onClick={()=>{
+      window.location.reload();
+    }}></img>
     {/* 큰 페이지 제목 */}
     {/* <h1 className={styles.pageTitle}>{title}</h1> */}
 

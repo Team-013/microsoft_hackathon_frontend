@@ -206,6 +206,7 @@
   display: grid;
   grid-template-columns: 1fr 6fr;
   margin-bottom: 24px;
+  background-color: red($color: #000000);
 }
 
 .answer {
