@@ -185,7 +185,7 @@ const App = () => {
                 const isNotCode = index % 2 === 0;
 
                 // 타이틀 언어 감지
-                const pattern = /^(javascript|xml|java)\b/i;
+                const pattern = /^(javascript|xml|java|python)\b/i;
                 const match = data.match(pattern);
                 let titleText = '';
                 let contentData = data;
