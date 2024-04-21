@@ -124,7 +124,8 @@ const App = () => {
     setChatHistory([...chatHistory, { user: 'AI', content: [`${title}${getIsRespondingText(selectedTranslate)}`] }]);
 
     // 영문 답변
-    const englishResult = await axios.get(`${serverUrl}/test`, {
+    // const englishResult = await axios.get(`${serverUrl}/test`, {
+    const englishResult = await axios.get(`${serverUrl}/question`, {
       params: {
         text: inputValue+ ' Please answer this question in English. And please give me some code examples.',
       },
