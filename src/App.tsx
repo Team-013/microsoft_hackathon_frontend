@@ -61,7 +61,7 @@ const App = () => {
 
     /// ''' 있을 때부터 클래스 다음 ''' 나올 때까지
     const koreanData = await koreanRes.data[0].translations.map((choice: any) => {
-      const text = choice.text.replaceAll('안녕하세요. ', '');
+      const text = choice.text.replaceAll('안녕하세요. ', '').replaceAll('안녕하세요! ', '');
       return text;
     }).join('\n');
 
@@ -182,8 +182,29 @@ const App = () => {
             <span className={styles.displayResponse}>
               {/* {displayResponse} */}
               {displayResponse.map((data, index) => {
-                const predicate = index % 2 === 0;
-                const returnTag = <pre className={predicate ? "" : styles.code} key={data + index}>{data.trim()}</pre>;
+                const isNotCode = index % 2 === 0;
+
+                // 타이틀 언어 감지
+                const pattern = /^(javascript|xml|java)\b/i;
+                const match = data.match(pattern);
+                let titleText = '';
+                let contentData = data;
+                if (match) {
+                  titleText = match[0]; // 매치된 텍스트를 타이틀로 사용
+                  contentData = data.substring(match[0].length).trim(); // 나머지 텍스트를 데이터로 사용
+                }else{
+                  contentData = data.trim();
+                }
+              
+
+                const returnTag = <div className={isNotCode?"":styles.codeWrap} key={data + index}>
+                  {/* {titleText} */}
+                  <div className={isNotCode?styles.hidden:styles.codeTitle}>
+                    <div></div> {/* {titleText} */}
+                    <div className={isNotCode?"":styles.codeTitleRight}>{title}</div>
+                  </div>
+                  <pre className={isNotCode ? "" : styles.code}>{contentData}</pre>
+                </div>;
                 return returnTag;
               })}
               {!completedTyping && <CursorSVG />}
