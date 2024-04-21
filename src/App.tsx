@@ -15,9 +15,91 @@ const CursorSVG = () => {
   );
 };
 
-const App = () => {
-  const title = 'E프레임마법사';
+function getTitleText(selectedTranslate: string) {
+  const titles: any = {
+    ko: "전자 정부 표준 프레임워크 Search AI",
+    en: "E-Government Framework Search AI",
+    vi: "AI Tìm kiếm Khung Chính phủ Điện tử",
+    mn: "Цахим засгийн газрын хайлтын AI хөтөлбөр",
+    ne: "ई-सरकार ढाँचा खोजी एआई",
+    'ar-sa': "الذكاء الاصطناعي لبحث إطار الحكومة الإلكترونية",
+    'es-mx': "IA de búsqueda del marco de gobierno electrónico",
+    bg: "AI за търсене в рамките на е-правителство",
+    'es-ec': "IA de búsqueda del marco de gobierno electrónico",
+    'ar-tn': "الذكاء الاصطناعي لبحث إطار الحكومة الإلكترونية",
+    sw: "AI ya Utafutaji wa Mfumo wa Serikali Mtandao"
+  };
+  return titles[selectedTranslate] || ""; // Fallback to empty string if no match
+}
+function getSearchText(selectedTranslate: string) {
+  // const searchText: any = selectedTranslate == 'ko' ? '검색':'Search';
+  const searchText: any = '검색';
+  const searchTexts: any = {
+    ko: "검색",
+    en: "Search",
+    vi: "Tìm kiếm",
+    mn: "Хайх",
+    ne: "खोज्नुहोस्",
+    'ar-sa': "بحث",
+    'es-mx': "Buscar",
+    bg: "Търсене",
+    'es-ec': "Buscar",
+    'ar-tn': "بحث",
+    sw: "Tafuta"
+  };
+  return searchText || "Search"; // Default to English if no match
+}
+function getInputText(selectedTranslate: string) {
+  const placeholders: any = {
+    ko: "여기에 입력하세요.",
+    en: "Enter it here.",
+    vi: "Nhập vào đây.",
+    mn: "Энд оруулна уу.",
+    ne: "यहाँ टाइप गर्नुहोस्.",
+    'ar-sa': "ادخل هنا.",
+    'es-mx': "Ingrese aquí.",
+    bg: "Въведете тук.",
+    'es-ec': "Ingrese aquí.",
+    'ar-tn': "ادخل هنا.",
+    sw: "Weka hapa."
+  };
+  return placeholders[selectedTranslate] || "";
+}
+function getIsRespondingText(selectedTranslate: string) {
+  const isRespondingTexts: any = {
+    ko: "가 답변 중입니다...",
+    en: "E-Wizard is responding...",
+    vi: "Pháp sư đang trả lời...",
+    mn: "Шидэт хүн хариулж байна...",
+    ne: "जादूगर जवाफ दिँदै गर्दैछ...",
+    'ar-sa': "الساحر يجيب...",
+    'es-mx': "El mago está respondiendo...",
+    bg: "Магьосникът отговаря...",
+    'es-ec': "El mago está respondiendo...",
+    'ar-tn': "الساحر يجيب...",
+    sw: "Mchawi anajibu..."
+  };
+  return isRespondingTexts[selectedTranslate] || "is responding...";
+}
+function getLocalizedGreeting(selectedTranslate: string, title: string, data: any) {
+  const greetings: any = {
+    ko: `안녕하세요.\n표준프레임워크센터 AI ${title}입니다.\n\n${data}\n\n감사합니다.`,
+    en: `Hello.\nWelcome to the Standard Framework Center AI ${title}.\n\n${data}\n\nThank you.`,
+    vi: `Xin chào.\nChào mừng bạn đến với Trung tâm Khung Chuẩn AI ${title}.\n\n${data}\n\nCảm ơn bạn.`,
+    mn: `Сайн байна уу.\nСтандарт Хүрээний Төв AI ${title} тавтай морилно уу.\n\n${data}\n\nБаярлалаа.`,
+    ne: `नमस्ते।\nप्रमाणित ढाँचा केन्द्र AI ${title} मा स्वागत छ।\n\n${data}\n\nधन्यवाद।`,
+    'ar-sa': `مرحبا.\nمرحباً في مركز الإطار القياسي AI ${title}.\n\n${data}\n\nشكراً لك.`,
+    'es-mx': `Hola.\nBienvenido al Centro de Marco Estándar AI ${title}.\n\n${data}\n\nGracias.`,
+    bg: `Здравейте.\nДобре дошли в Центъра за стандартни рамки AI ${title}.\n\n${data}\n\nБлагодаря ви.`,
+    'es-ec': `Hola.\nBienvenido al Centro de Marco Estándar AI ${title}.\n\n${data}\n\nGracias.`,
+    'ar-tn': `مرحبا.\nمرحباً في مركز الإطار القياسي AI ${title}.\n\n${data}\n\nشكراً لك.`,
+    sw: `Habari.\nKaribu katika Kituo cha Mfumo Sanifu AI ${title}.\n\n${data}\n\nAsante.`
+  };
+  return greetings[selectedTranslate] || greetings['en']; // Default to English if no match
+}
 
+
+const App = () => {
   const [inputValue, setInputValue] = useState<string>('');
   const [question, setQuestion] = useState<string>('');
   const [chatHistory, setChatHistory] = useState([{ user: 'AI', content: [''] }]);
@@ -27,6 +109,8 @@ const App = () => {
   const [showTranslate, setShowTranslate] = useState(false);
   const [selectedTranslate, setSelectedTranslate] = useState("ko");
 
+  const title = selectedTranslate =='ko' ? 'E프레임마법사' : '';
+
   // input 값이 변경될 때마다 호출되는 함수
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => setInputValue(event.target.value); // 입력값을 state에 반영합니다.
 
@@ -34,42 +118,44 @@ const App = () => {
     setShowTranslate(!showTranslate); // showTranslate 상태를 토글
   };
   
-
   const onClick = async () => {
     setQuestion(inputValue);
     setInputValue('');
-    setChatHistory([...chatHistory, { user: 'AI', content: [`${title}가 답변중입니다...`] }]);
+    setChatHistory([...chatHistory, { user: 'AI', content: [`${title}${getIsRespondingText(selectedTranslate)}`] }]);
 
     // 영문 답변
     const englishResult = await axios.get(`${serverUrl}/test`, {
       params: {
-        text: inputValue,
+        text: inputValue+ ' Please answer this question in English. And please give me some code examples.',
       },
     });
     const englishResData = englishResult.data.data.choices.map((choice: any) => {
-      return choice.message.content;
+      const content = choice.message.content.replaceAll('Hello.', '').replaceAll('Hello,', '').replaceAll('Hello!', ''.trim());
+      return content;
     }).join('\n');
 
     // 한글 답변
+    console.log({englishResData, selectedTranslate});
     const koreanRes = (
       await axios.get(`${serverUrl}/translate`, {
         params: {
           text: englishResData,
+          language: selectedTranslate
         },
       })
     ).data;
 
     /// ''' 있을 때부터 클래스 다음 ''' 나올 때까지
     const koreanData = await koreanRes.data[0].translations.map((choice: any) => {
-      const text = choice.text.replaceAll('안녕하세요. ', '').replaceAll('안녕하세요! ', '');
+      const text = choice.text.replaceAll('안녕하세요.', '').replaceAll('안녕하세요,', '').replaceAll('안녕하세요!', '').replaceAll('안녕.', '').trim();
       return text;
     }).join('\n');
 
     const splitedEnglishData = englishResData.split("```");
-
-    const resultText = `안녕하세요.\n표준프레임워크센터 AI ${title}입니다.\n\n${koreanData}\n\n감사합니다.`;
-    const splitedText = resultText.split("'''").map((text, index)=>{
-      
+    const resultText = getLocalizedGreeting(selectedTranslate, title, koreanData);
+    
+    const delimiter = resultText.includes("'''") ? "'''" : "''";
+    const splitedText = resultText.split(delimiter).map((text: any, index: any)=>{
       const isCode = index%2 == 1;
       if(isCode){
         return splitedEnglishData[index];
@@ -152,7 +238,7 @@ const App = () => {
       <br />
       <div className={styles.inputContainer}>
         {/* 메인 */}
-        <div className={styles.title}>전자 정부 표준 프레임워크 Search AI</div>
+        <div className={styles.title}>{getTitleText(selectedTranslate)}</div>
         <div className={styles.article}>
           <div className={styles.questionbox}>
             <div className={styles.icon}>
@@ -162,12 +248,12 @@ const App = () => {
               type='text'
               value={inputValue}
               onChange={handleChange}
-              placeholder='여기에 입력하세요.'
+              placeholder={getInputText(selectedTranslate)}
               className={styles.inputField}
             />
 
             <button className={styles.submit} onClick={onClick} disabled={!inputValue || !completedTyping}>
-              검색
+              {getSearchText(selectedTranslate)}
             </button>
           </div>
           <div className={styles.yourQuestionContainer}>
@@ -201,7 +287,7 @@ const App = () => {
                   {/* {titleText} */}
                   <div className={isNotCode?styles.hidden:styles.codeTitle}>
                     <div></div> {/* {titleText} */}
-                    <div className={isNotCode?"":styles.codeTitleRight}>{title}</div>
+                    <div className={isNotCode?"":styles.codeTitleRight}>E프레임마법사</div>
                   </div>
                   <pre className={isNotCode ? "" : styles.code}>{contentData}</pre>
                 </div>;
