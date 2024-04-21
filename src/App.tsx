@@ -145,9 +145,10 @@ const App = () => {
         },
       })
     ).data;
-
+    console.log({koreanRes});
     /// ''' 있을 때부터 클래스 다음 ''' 나올 때까지
-    const koreanData = await koreanRes.data[0].translations.map((choice: any) => {
+    // const data = Array.isArray(await koreanRes?.data) ? await koreanRes?.data[0] : ;
+    const koreanData = await koreanRes?.data[0]?.translations.map((choice: any) => {
       const text = choice.text.replaceAll('안녕하세요.', '').replaceAll('안녕하세요,', '').replaceAll('안녕하세요!', '').replaceAll('안녕.', '').trim();
       return text;
     }).join('\n');
