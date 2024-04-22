@@ -275,7 +275,7 @@ const App = () => {
                 const isNotCode = index % 2 === 0;
 
                 // 타이틀 언어 감지
-                const pattern = /^(javascript|Javascript|JavaScript|JAVASCRIPT|Python|python|jsp|JSP|Jsp|java|JAVA|Java|xml|XML|Xml|C|c|cpp|CPP|Cpp|ruby|RUBY|Ruby|swift|SWIFT|Swift|go|GO|Go|PHP|php|Php|rust|RUST|Rust|csharp|CSHARP|kotlin|KOTLIN|R|r|SCALA|scala|HASKEL|haskel|bash|BASH|html|HTML|Html|Bash)\b/i;
+                const pattern = /^(javascript|Javascript|JavaScript|JAVASCRIPT|Python|python|jsp|JSP|Jsp|java|JAVA|Java|xml|XML|Xml|C|c|cpp|CPP|Cpp|ruby|RUBY|Ruby|swift|SWIFT|Swift|go|GO|Go|PHP|php|Php|rust|RUST|Rust|csharp|CSHARP|kotlin|KOTLIN|R|r|SCALA|scala|HASKEL|haskel|bash|BASH|html|HTML|Html|Bash|sql|SQL)\b/i;
                 const match = data.match(pattern);
                 let titleText = '';
                 let contentData = data;
