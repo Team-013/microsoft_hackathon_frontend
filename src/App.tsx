@@ -131,7 +131,7 @@ const App = () => {
       },
     });
     const englishResData = englishResult.data.data.choices.map((choice: any) => {
-      const content = choice.message.content.replaceAll('Hello.', '').replaceAll('Hello,', '').replaceAll('Hello!', ''.trim());
+      const content = choice.message.content.replaceAll('Hello.', '').replaceAll('Hello,', '').replaceAll("```", "'''").replaceAll("``", "'''").replaceAll('Hello!', ''.trim());
       return content;
     }).join('\n');
 
@@ -153,16 +153,16 @@ const App = () => {
       return text;
     }).join('\n');
 
-    const splitedEnglishData = englishResData.split("```");
-    const resultText = getLocalizedGreeting(selectedTranslate, title, koreanData);
+    const splitedEnglishData = englishResData.split("'''");
+    const resultText = getLocalizedGreeting(selectedTranslate, title, koreanData).replaceAll("''", "'''").replaceAll("```", "'''").replaceAll("``", "'''");
     
-    const delimiter = resultText.includes("'''") ? "'''" : "''";
-    const splitedText = resultText.split(delimiter).map((text: any, index: any)=>{
+    // const delimiter = resultText.includes("'''") ? "'''" : "''";
+    const splitedText = resultText.split("'''").map((text: any, index: any)=>{
       const isCode = index%2 == 1;
       if(isCode){
         return splitedEnglishData[index];
       }else{
-        return text;
+        return text.replaceAll("'", "").replaceAll("`", "");
       }
     });
 
@@ -193,7 +193,7 @@ const App = () => {
               clearInterval(intervalId);
               resolve(intervalId);
             }
-          }, 60)
+          }, 25)
         })
       }
 
@@ -275,7 +275,7 @@ const App = () => {
                 const isNotCode = index % 2 === 0;
 
                 // 타이틀 언어 감지
-                const pattern = /^(javascript|xml|java|python)\b/i;
+                const pattern = /^(javascript|Javascript|JavaScript|JAVASCRIPT|Python|python|jsp|JSP|Jsp|java|JAVA|Java|xml|XML|Xml|C|c|cpp|CPP|Cpp|ruby|RUBY|Ruby|swift|SWIFT|Swift|go|GO|Go|PHP|php|Php|rust|RUST|Rust|csharp|CSHARP|kotlin|KOTLIN|R|r|SCALA|scala|HASKEL|haskel|bash|BASH|html|HTML|Html|Bash)\b/i;
                 const match = data.match(pattern);
                 let titleText = '';
                 let contentData = data;
