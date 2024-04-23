@@ -327,8 +327,8 @@ const App = () => {
           }}
         ></img> */}
         <div className={styles.serviceLogoContainer}>
-          <img className={styles.team013Logo} src='team013.jpeg' alt='team013 logo' width={40} />
-          <div className={styles.serviceName}>E프레임 마법사</div>
+          <img className={styles.team013Logo} src='team013.jpeg' alt='team013 logo' width={48} />
+          <div className={styles.serviceName}>E프레임마법사</div>
         </div>
         {/* 큰 페이지 제목 */}
         {/* <h1 className={styles.pageTitle}>{title}</h1> */}

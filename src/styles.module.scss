@@ -24,6 +24,8 @@
 }
 
 .container {
+  text-align: center;
+
   display: flex;
   flex-direction: column;
   font-family: 'Roboto', sans-serif;
@@ -113,6 +115,7 @@
 }
 
 .serviceLogoContainer {
+  margin-top: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -131,6 +134,15 @@
   // margin-left: 29px;
 }
 
+.containerBox {
+  @media screen and (min-width: 1080px) {
+    margin: 0 160px;
+  }
+  @media screen and (min-width: 1260px) {
+    margin: 0 200px;
+  }
+}
+
 .pageTitle {
   margin-top: 40px;
   font-family: 'Roboto', sans-serif;
@@ -146,11 +158,14 @@
   margin: 16px 0 32px 0;
 }
 
+.inputContainer {
+  text-align: center;
+}
+
 .title {
-  width: 100%;
   padding: 12px;
   color: #464646;
-  font-size: 24px;
+  font-size: 20px;
   text-align: center;
   font-weight: bold;
   unicode-bidi: isolate;
@@ -179,9 +194,11 @@
 }
 
 .questionbox {
-  display: grid;
-  grid-template-columns: 1fr 8fr 1fr;
-  gap: 16px;
+  display: flex;
+  justify-content: space-around;
+  // display: grid;
+  // grid-template-columns: 1fr 8fr 1fr;
+  gap: 24px;
   margin-bottom: 40px;
 }
 
