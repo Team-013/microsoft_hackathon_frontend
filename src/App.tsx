@@ -193,7 +193,7 @@ const App = () => {
               clearInterval(intervalId);
               resolve(intervalId);
             }
-          }, 25)
+          }, 40)
         })
       }
 
@@ -286,14 +286,16 @@ const App = () => {
                   contentData = data.trim();
                 }
               
-
                 const returnTag = <div className={isNotCode?"":styles.codeWrap} key={data + index}>
                   {/* {titleText} */}
                   <div className={isNotCode?styles.hidden:styles.codeTitle}>
                     <div></div> {/* {titleText} */}
                     <div className={isNotCode?"":styles.codeTitleRight}>E프레임마법사</div>
                   </div>
-                  <pre className={isNotCode ? "" : styles.code}>{contentData}</pre>
+                  <pre className={isNotCode ? "" : styles.code}>
+                    <span>{contentData}</span>
+                    {/* <span>{!completedTyping && <CursorSVG />}</span> */}
+                  </pre>
                 </div>;
                 return returnTag;
               })}
