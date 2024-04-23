@@ -27,8 +27,8 @@
   display: flex;
   flex-direction: column;
   font-family: 'Roboto', sans-serif;
-  padding-left: 10%; /* 왼쪽 여백 추가 */
-  padding-right: 10%; /* 오른쪽 여백 추가 */
+  padding-left: 4%; /* 왼쪽 여백 추가 */
+  padding-right: 4%; /* 오른쪽 여백 추가 */
 }
 
 .header {
@@ -46,7 +46,7 @@
   align-items: end;
   & > div {
     transition: all 0.1s ease-in-out;
-    position:relative;
+    position: relative;
   }
   li {
     list-style: none;
@@ -55,16 +55,16 @@
 
 .selected {
   position: absolute !important;
-  right: 100px;
+  right: 60px;
   top: -12px;
   color: #858fa8;
   // color: #eb3e18;
   font-weight: 600;
-  height :100%;
+  height: 100%;
   display: flex;
   align-items: end;
   margin-bottom: 10px;
-  width : fit-content;
+  width: fit-content;
   white-space: nowrap;
 }
 
@@ -89,22 +89,20 @@
   }
 }
 
-
 .select {
   li {
-    display : none;
+    display: none;
   }
-  &.open li{
+  &.open li {
     display: block;
   }
 }
-
 
 .translateImg {
   width: 35px;
   height: 35px;
   cursor: pointer;
-  margin-right: 60px;
+  margin-right: 20px;
   margin-top: 30px;
 }
 
@@ -117,7 +115,7 @@
 .titleImage {
   width: 100%;
   // margin-top: 20px;
-  margin-left: 29px;
+  // margin-left: 29px;
 }
 
 .pageTitle {
@@ -143,6 +141,10 @@
   text-align: center;
   font-weight: bold;
   unicode-bidi: isolate;
+
+  margin-bottom: 40px;
+  white-space: pre-wrap;
+  text-wrap: wrap;
 }
 
 .info {
@@ -153,8 +155,11 @@
 }
 
 .article {
-  position: relative;
-  padding: 48px 20px 48px 100px;
+  // position: relative;
+  // padding: 48px 20px 48px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: cetn;
   color: #222;
   font-size: 16px;
   font-weight: 700;
@@ -162,8 +167,7 @@
 
 .questionbox {
   display: grid;
-  grid-template-columns: 1fr 6fr 1fr;
-  align-items: center;
+  grid-template-columns: 1fr 8fr 1fr;
   gap: 16px;
   margin-bottom: 40px;
 }
@@ -177,7 +181,7 @@
 .inputField {
   border-radius: 5px;
   padding: 0 12px;
-  margin-right: 28px;
+  // margin-right: 28px;
   width: 90%;
   height: 40px;
   outline: none;
@@ -220,7 +224,7 @@
 
 .article {
   position: relative;
-  padding: 48px 0 0 100px;
+  // padding: 48px 0 0 100px;
   font-size: 16px;
   line-height: 24px;
 }
